@@ -8,6 +8,7 @@ const movieRepositoryMock = {
   findOneBy: jest.fn(),
   findAndCount: jest.fn(),
   update: jest.fn(),
+  delete: jest.fn(),
 };
 
 const movie = {
