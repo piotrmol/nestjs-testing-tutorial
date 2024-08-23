@@ -3,6 +3,7 @@ import { Movie } from '../../src/movie/entity/movie';
 import * as request from 'supertest';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { title } from 'process';
 
 const newMovie = {
   title: 'test title',
@@ -64,6 +65,17 @@ describe('movie API', () => {
 
     expect(errorResponse.status).toBe(400);
     expect(errorResponse.body.message).toBe('Such movie already exists');
+  });
+
+  it('throws validation error when title is not provided', async () => {
+    const createMovieResponse = await request(app.getHttpServer())
+      .post('/movie')
+      .send({ ...newMovie, title: undefined });
+
+    expect(createMovieResponse.status).toBe(400);
+    expect(createMovieResponse.body.message).toContain(
+      'title should not be empty',
+    );
   });
 
   it('get list of movies and pagination data', async () => {

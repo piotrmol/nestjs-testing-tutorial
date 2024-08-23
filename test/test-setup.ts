@@ -14,8 +14,9 @@ module.exports = async () => {
   }).compile();
 
   const app = moduleFixture.createNestApplication();
-  await app.init();
   app.useGlobalPipes(new ValidationPipe());
+
+  await app.init(); //must be after registering validation pipeline
   await runMigrations();
 
   global.app = app;
